@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>In60 - News Detail</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <header>
+      <a href="index.html">← Back</a>
+      <h1>News Detail</h1>
+    </header>
+    <main id="newsDetail">Loading...</main>
+  </div>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const newsId = urlParams.get('id');
+
+    async function loadNewsDetail() {
+      const res = await fetch('https://opensheet.elk.sh/1k-9f5rX-GOM3NGJLFl6jVWQ5tohFdR6HeABNvOvuHhE/news');
+      const news = await res.json();
+      const item = news[newsId];
+      const detail = document.getElementById('newsDetail');
+      if (item) {
+        detail.innerHTML = \`
+          <h2>\${item.title}</h2>
+          <p><strong>Summary:</strong> \${item.summary}</p>
+          <p><strong>Sarcastic:</strong> \${item.sarcastic_summary}</p>
+          <p><strong>Category:</strong> \${item.category}</p>
+          <a href="\${item.url}" target="_blank">Read Full Article</a>
+        \`;
+      } else {
+        detail.innerHTML = '<p>News not found.</p>';
+      }
+    }
+
+    loadNewsDetail();
+  </script>
+</body>
+</html>
